@@ -23,7 +23,7 @@ if not api_key:
     st.stop()
 
 client = genai.Client(api_key=api_key)
-MODEL_NAME = "gemini-2.5-flash"
+MODEL_NAME = "gemini-3.5-flash"
 
 st.header("💵 Monthly Income")
 
