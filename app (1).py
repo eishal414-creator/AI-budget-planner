@@ -164,16 +164,38 @@ Give 5 simple actions for next month.
 This is general budgeting guidance, not professional financial advice.
 """
 
-    try:
+       try:
         with st.spinner("🤖 AI is analyzing your budget..."):
-            response = client.models.generate_content(
-                model=MODEL_NAME,
-                contents=prompt
-            )
+
+            response = None
+
+            for attempt in range(3):
+                try:
+                    response = client.models.generate_content(
+                        model=MODEL_NAME,
+                        contents=prompt
+                    )
+                    break
+
+                except Exception as e:
+                    if "503" in str(e) or "UNAVAILABLE" in str(e):
+                        if attempt < 2:
+                            time.sleep(2 ** attempt)
+                        else:
+                            raise
+                    else:
+                        raise
 
         st.success("Your personalized budget analysis is ready!")
         st.markdown(response.text)
 
     except Exception as e:
-        st.error("Something went wrong while connecting to Gemini.")
+        if "503" in str(e) or "UNAVAILABLE" in str(e):
+            st.error(
+                "Gemini is temporarily busy. Please wait a few seconds and try again."
+            )
+        else:
+            st.error("Something went wrong while connecting to Gemini.")
+
+        st.caption(f"Error: {str(e)}")
         st.caption(f"Error: {str(e)}")
