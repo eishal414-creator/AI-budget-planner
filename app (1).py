@@ -163,8 +163,8 @@ Give 5 simple actions for next month.
 
 This is general budgeting guidance, not professional financial advice.
 """
-
-       try:
+    
+    try:
         with st.spinner("🤖 AI is analyzing your budget..."):
 
             response = None
@@ -197,5 +197,4 @@ This is general budgeting guidance, not professional financial advice.
         else:
             st.error("Something went wrong while connecting to Gemini.")
 
-        st.caption(f"Error: {str(e)}")
         st.caption(f"Error: {str(e)}")
